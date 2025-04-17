@@ -1,9 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatDialog} from '@angular/material/dialog';
 import { ContactFormComponent } from '../contact-form/contact-form.component';
 
 import { ContactService } from '../services/contact.service';

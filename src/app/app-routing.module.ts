@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ContactListComponent } from './contact-list/contact-list.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { data } from './data/data';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: ContactListComponent },
-  { path: 'contactform', component: ContactFormComponent }
+  { path: 'add-contact', component: ContactFormComponent, data: { dbops: data.create } }
 ];
 
 @NgModule({
@@ -14,4 +15,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-
