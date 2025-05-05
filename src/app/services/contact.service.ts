@@ -1,70 +1,88 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-
-
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { IContact } from '../model/contact';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContactService {
-  constructor(private http: HttpClient) { }
+  constructor() { }
+
+  private dummyContacts: IContact[] = [
+    {
+      id: 1, name: 'John Doe', email: 'john.doe@example.com', phone: '123-456-7890',
+      gender: 0,
+      birth: '',
+      techno: '',
+      message: ''
+    },
+    {
+      id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', phone: '987-654-3210',
+      gender: 0,
+      birth: '',
+      techno: '',
+      message: ''
+    },
+    {
+      id: 3, name: 'Peter Jones', email: 'peter.jones@example.com', phone: '555-123-4567',
+      gender: 0,
+      birth: '',
+      techno: '',
+      message: ''
+    },
+    {
+      id: 4, name: 'Maria Garcia', email: 'maria.garcia@example.com', phone: '111-222-3333',
+      gender: 0,
+      birth: '',
+      techno: '',
+      message: ''
+    },
+    {
+      id: 5, name: 'David Lee', email: 'david.lee@example.com', phone: '444-555-6666',
+      gender: 0,
+      birth: '',
+      techno: '',
+      message: ''
+    },
+  ];
 
   // get all contact data
-  getAllContact(url: string): Observable<IContact[]> {
-    return this.http.get<IContact[]>(url)
-      .pipe(
-        catchError(this.handleError)
-      );
+  getAllContact(): Observable<IContact[]> {
+    return new Observable<IContact[]>(observer => {
+      observer.next(this.dummyContacts);
+      observer.complete();
+    });
   }
 
-  // insert new contact details
-  addContact(url: string, contact: IContact): Observable<any> {
-    return this.http.post(url, JSON.stringify(contact), httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+    addContact(BASE_USER_ENDPOINT: string, contact: IContact): Observable<any> {
+        return new Observable<any>(observer => {
+          contact.id = this.dummyContacts.length + 1;
+          this.dummyContacts.push(contact);
+          observer.next(contact);
+          observer.complete();
+        });
+      }
 
-  // update contact details
-  updateContact(url: string, id: number, contact: IContact): Observable<any> {
-    const newurl = `${url}?id=${id}`;
-    return this.http.put(newurl, contact, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  // delete contact information
-  deleteContact(url: string, id: number): Observable<any> {
-    const newurl = `${url}?id=${id}`; // DELETE api/contact?id=42
-    return this.http.delete(newurl, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  // custom handler
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-    }
-    // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
+  updateContact(id: number, contact: IContact): Observable<any> {
+      return new Observable<any>(observer => {
+          const index = this.dummyContacts.findIndex(c => c.id === id);
+          if (index !== -1) {
+            this.dummyContacts[index] = { ...this.dummyContacts[index], ...contact };
+          }
+          observer.next(this.dummyContacts[index]);
+          observer.complete();
+        });
+      }
+    
+    deleteContact(id: number): Observable<any> {
+        return new Observable<any>(observer => {
+          const index = this.dummyContacts.findIndex(c => c.id === id);
+          if (index !== -1) {
+            this.dummyContacts.splice(index, 1);
+          }
+          observer.next({});
+          observer.complete();
+        });
   }
 }

@@ -4,6 +4,7 @@ export interface IContact {
     email: string;
     gender: number;
     birth: string;
+    phone: string;
     techno: string;
     message: string;
 }

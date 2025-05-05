@@ -22,15 +22,17 @@ export class ContactListComponent implements OnInit {
   modalTitle: string = '';
   modalBtnTitle: string = '';
 
-  displayedColumns = ['name', 'email', 'gender', 'birth', 'techno', 'message', 'action'];
+  displayedColumns: string[];
   dataSource = new MatTableDataSource<IContact>();
   
-  constructor(public snackBar: MatSnackBar, private _contactService: ContactService, private dialog: MatDialog) { }
+  constructor(public snackBar: MatSnackBar, private _contactService: ContactService, private dialog: MatDialog) {
+    this.displayedColumns = ['name', 'email', 'gender', 'birth', 'techno', 'message', 'action'];
+   }
 
   ngOnInit() {
-    this.loadingState = true;
     this.loadContacts();
   }
+  
   openDialog(): void {
     const dialogRef = this.dialog.open(ContactFormComponent, {
       width: '500px',
@@ -62,11 +64,11 @@ export class ContactListComponent implements OnInit {
   }
 
   loadContacts(): void {
-    this._contactService.getAllContact(db.BASE_USER_ENDPOINT + 'getAllContact')
-      .subscribe(contacts => {
-        this.loadingState = false;
-        this.dataSource.data = contacts;
-      });
+    this._contactService.getAllContact().subscribe(contacts => {
+      this.contacts = contacts;
+      this.dataSource.data = this.contacts;
+    });
+
   }
 
   getGender(gender: number): string {

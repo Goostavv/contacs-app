@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -21,6 +21,9 @@ export class AppComponent {
     { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', isEditing: false },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '987-654-3210', isEditing: false }
   ];
+  
+  isDarkMode = signal(false);
+  get themeClass() { return this.isDarkMode() ? 'dark-mode' : 'light-mode';}
 
   editForm: FormGroup;
 
@@ -32,6 +35,10 @@ export class AppComponent {
     });
   }
 
+  toggleDarkMode() {
+    this.isDarkMode.update(value => !value);
+  }
+  
   navigateToAddNewContact() {
     this.router.navigate(['/add-contact']);
   }

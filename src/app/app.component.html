@@ -1,13 +1,15 @@
-<mat-toolbar color="primary">
+<body [class.dark-theme]="isDarkMode()">
+  <mat-toolbar color="primary">
   <span>Contact Application</span>
+    <button mat-icon-button (click)="toggleDarkMode()">
+      <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
 </mat-toolbar>
 
 <div class="container">
   <mat-card>
-    <mat-card-title>Contact List</mat-card-title>
     <mat-card-content>
       <p>Manage your contacts efficiently.</p>
-      <button mat-raised-button (click)="navigateToAddNewContact()">Test Navigate</button>
       <button mat-raised-button color="accent" routerLink="/add-contact">
         Add New Contact
       </button>
@@ -17,7 +19,7 @@
   <router-outlet></router-outlet>
 
   <mat-card>
-    <mat-card-title>Contacts</mat-card-title>
+    <!--<mat-card-title>Contacts</mat-card-title>-->
     <mat-card-content>
       <table mat-table [dataSource]="contacts" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
@@ -68,9 +70,10 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!--<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
       </table>
     </mat-card-content>
   </mat-card>
 </div>
+</body>
